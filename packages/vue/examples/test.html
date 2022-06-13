@@ -1,0 +1,84 @@
+<script src="../dist/vue.global.js"></script>
+
+<div id="demo">
+<!--  <button @click="change">test</button>-->
+<!--    <keep-alive>-->
+<!--        <component-a v-if="show"></component-a>-->
+<!--        <Component-b v-else></Component-b>-->
+<!--    </keep-alive>-->
+    <div v-if="show">
+        <div v-for="(item, index) in list" :key="index">{{item}}</div>
+    </div>
+
+</div>
+
+<script>
+const { createApp, ref, watchEffect, watch, nextTick, h } = Vue
+
+const ComponentA = {
+    setup() {
+        const a = ref('4')
+        return {
+            a
+        }
+    },
+    render(a) {
+        return h('div', {}, [
+            'a',
+            h('input')
+        ])
+    }
+}
+const ComponentB = {
+    setup() {
+        const b = ref('b')
+        return {
+            b
+        }
+    },
+    render() {
+        return h('div', {}, [
+            'b',
+            h('input')
+        ])
+    }
+}
+createApp({
+    components: {
+        'component-a': ComponentA,
+        'component-b': ComponentB,
+    },
+  setup() {
+    const show = ref(false)
+
+      const list = ref([
+          1,2,3,4,5,6
+      ])
+
+    return {
+        list,
+        show,
+        change() {
+            show.value = !show.value
+        },
+    }
+  }
+}).mount('#demo')
+</script>
+
+<style>
+  #demo {
+    font-family: 'Helvetica', Arial, sans-serif;
+  }
+  a {
+    text-decoration: none;
+    color: #f66;
+  }
+  li {
+    line-height: 1.5em;
+    margin-bottom: 20px;
+  }
+  .author, .date {
+    font-weight: bold;
+  }
+</style>
